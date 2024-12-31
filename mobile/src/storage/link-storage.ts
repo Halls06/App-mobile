@@ -2,14 +2,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LINKS_STORAGE_KEY = "mobile-storage"
 
-export type Linkstorage = {
+export type LinkStorage = {
     id: string
     url: string
     name: string
     category: string
 }
 
-async function get(): Promise<Linkstorage[]> {
+async function get(): Promise<LinkStorage[]> {
     const Storage = await AsyncStorage.getItem(LINKS_STORAGE_KEY)
     const response = Storage ? JSON.parse(Storage) : []
 
