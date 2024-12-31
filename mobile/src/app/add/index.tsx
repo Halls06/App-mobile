@@ -44,7 +44,9 @@ export default function Add(){
         url,
         category,
        })
-    
+    Alert.alert("Sucesso", "Novo link adicionado", [
+        { text: "Ok", onPress: () => router.back()}
+    ])
     } catch (error) {
         Alert.alert("Erro", "Não foi possivel salvar o link")
     }
@@ -70,7 +72,7 @@ export default function Add(){
                 <Button title="Adicionar" onPress={handleAdd}/>
             </View>
 
-            <Text style={s.title}> {name} </Text>
+
         </View>
     )
 }

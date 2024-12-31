@@ -19,6 +19,8 @@ import { s } from "./styles";
 
 
 export default function Home(){
+    const [showModal, setModal] = useState(false)
+    const [link, setLink] = useState<LinkStorage>({} as LinkStorage)
     const [links, setLinks] = useState<LinkStorage[]>([])
     const [category, setCategory] = useState(categories[0].name)
 
@@ -26,7 +28,10 @@ export default function Home(){
 
         try {
             const response = await linkStorage.get()
-            setLinks(response)
+            
+            const filtered = response.filter((link) => link.category === category)
+
+            setLinks(filtered)
 
         } catch (error) {
             Alert.alert("Erro", "Não foi possivel listar os links")
@@ -34,9 +39,15 @@ export default function Home(){
         
     }
 
+
+    function handleDatails(selected: LinkStorage){
+        setModal(true)
+        setLink(selected)
+    }
+
     useFocusEffect(useCallback(() => {
         getLinks()
-    },[]))
+    },[category]))
 
     return (
         <View style={s.container}>
@@ -57,7 +68,7 @@ export default function Home(){
              renderItem={({item}) => (
                 <Link name={item.name}
                 url={item.url} 
-                onDetails={() => console.log("Clicou!")} />
+                onDetails={() => handleDatails(item)} />
              )}
              style={s.links}
              contentContainerStyle={s.linksContent}
@@ -65,19 +76,19 @@ export default function Home(){
             />
 
 
-            <Modal transparent visible={false}>
+            <Modal transparent visible={showModal} animationType="slide">
              <View style={s.Modal}>
                 <View style={s.modalContent}>
                     <View style={s.modalHeader}>
-                            <Text style={s.modalCategory}>Curso</Text>
-                        <TouchableOpacity>
+                            <Text style={s.modalCategory}> {link.category} </Text>
+                        <TouchableOpacity onPress={() => setModal(false)}>
                             <MaterialIcons name="close" color={colors.gray[400]} size={20} />
                         </TouchableOpacity>
                      </View>
 
-                    <Text style={s.modalLinkName}> RocketSeat</Text>
+                    <Text style={s.modalLinkName}> {link.name} </Text>
 
-                    <Text style={s.modalUrl}>https://www.facebook.com/tonybrabo013</Text>
+                    <Text style={s.modalUrl}> {link.url} </Text>
 
                     <View style={s.modalFooter}>
                         <Option name="Excluir" icon="delete" variant="secondary" />
