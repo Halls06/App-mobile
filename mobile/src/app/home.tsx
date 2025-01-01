@@ -45,6 +45,15 @@ export default function Home(){
         setLink(selected)
     }
 
+
+    async function handleRemover(){
+        try {
+            
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possivel excluir")
+        }
+    }
+
     useFocusEffect(useCallback(() => {
         getLinks()
     },[category]))
