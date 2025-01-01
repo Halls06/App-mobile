@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-import { Image, TouchableOpacity, View, FlatList, Modal, Text, Alert } from "react-native";
+import { Image, TouchableOpacity, View, FlatList, Modal, Text, Alert, Linking } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
 
@@ -45,15 +45,32 @@ export default function Home(){
         setLink(selected)
     }
 
-
-    async function handleRemover(){
+    async function linkRemove(){
         try {
-            
+            await linkStorage.remove(link.id)
+            getLinks()
+            setModal(false)
         } catch (error) {
             Alert.alert("Erro", "Não foi possivel excluir")
         }
     }
 
+
+ function handleRemove(){
+        
+            Alert.alert("Excluir", "Deseja realmente excluir"), [
+                { style: "cancel", text: "Não" },
+                { text: "Sim", onPress: linkRemove}
+            ]}
+
+
+ async function handleOpen(){
+    try {
+        await Linking.openURL(link.url)
+    } catch (error) {
+        Alert.alert("Link", "Não foi possivel abrir o link")
+    }
+ }           
     useFocusEffect(useCallback(() => {
         getLinks()
     },[category]))
@@ -100,8 +117,8 @@ export default function Home(){
                     <Text style={s.modalUrl}> {link.url} </Text>
 
                     <View style={s.modalFooter}>
-                        <Option name="Excluir" icon="delete" variant="secondary" />
-                        <Option name="Abrir" icon="language" />
+                        <Option name="Excluir" icon="delete" variant="secondary" onPress={handleRemove}/>
+                        <Option name="Abrir" icon="language" onPress={handleOpen}/>
                         
                     </View>
 

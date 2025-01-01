@@ -70,7 +70,7 @@ export const s = StyleSheet.create({
         width: "100%",
         justifyContent: "space-between",
         borderWidth: 1,
-        borderTopColor: colors.gray[600],
+        borderTopColor: colors.gray[900],
         paddingVertical: 16,
         
     }
